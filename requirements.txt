@@ -1,0 +1,9 @@
+
+# Requirements.txt file
+# This file contains a list of packages to be installed by PIP
+# when setting up this project.
+
+# Wiredrive Test Framework - WTF
+wtframework==0.4.11
+
+    
