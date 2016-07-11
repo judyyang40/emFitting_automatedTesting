@@ -59,13 +59,12 @@ selenium:
   # results, but will incur the startup time for the browser to start up for each 
   # test.
   # Default is 'true'
-  reusebrowser: true
+  reusebrowser: false
 
   # Take screenshot of browser on error.
   take_screenshot: true
   # Take reference screenshot upon encountering a new page.
-  take_reference_screenshot: true
-
+  take_reference_screenshot: false
   # Multi Process
   # Enabling this setting will spawn a unique webdriver per thread, so no 2 threads
   # share the same webdriver when instantiated using WTF_WEBDRIVER_MANAGER 
@@ -87,4 +86,4 @@ timeout:
   # up and take a break.  For example, transcoding an uploaded movie.
   epic: 300
 
-baseurl: 'http://ec2-52-9-175-55.us-west-1.compute.amazonaws.com/'
+baseurl: 'https://qa.emfitting.com/'

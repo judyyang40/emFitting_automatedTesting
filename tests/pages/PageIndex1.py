@@ -30,7 +30,7 @@ class PageIndex1(PageObject):
     '''
     PageIndex
     WTFramework PageObject representing a page like:
-    http://ec2-52-9-175-55.us-west-1.compute.amazonaws.com/index-1.php
+    https://qa.emfitting.com/index-1.php
     '''
 
     ### Page Elements Section ###
@@ -71,7 +71,7 @@ class PageIndex1(PageObject):
         '''
         Validates page.
         '''
-        if not 'http://ec2-52-9-175-55.us-west-1.compute.amazonaws.com/index-1.php' in webdriver.current_url:
+        if not self.base_url+'index-1.php' in webdriver.current_url:
             raise InvalidPageError("This is not index-1.")
     '''
     webdriver = None

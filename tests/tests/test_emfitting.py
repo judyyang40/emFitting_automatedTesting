@@ -8,6 +8,9 @@ from tests.pages.tryon_page import TryOnPage
 from tests.pages.shop_page import ShopPage
 from tests.pages.PageIndex1 import PageIndex1
 from tests.pages.emShare_page import EmShare
+from tests.pages.fashion_page import Fashion
+from tests.pages.userprofile_page import UserProfile
+from tests.pages.home_page import HomePage
 import unittest
 
 class Test(WTFBaseTest):
@@ -22,29 +25,41 @@ class Test(WTFBaseTest):
 		signin_page = PageFactory.create_page(SignInPage)
 		self.assertTrue(signin_page.signin_test())
 
-	def test_indexpage(self):
+	def test_home(self):
 		webdriver = WTF_WEBDRIVER_MANAGER.new_driver()
 		webdriver.get(self.base_url+'index-1.php')
-		page1 = PageFactory.create_page(PageIndex1)
-		self.assertTrue(page1.validate_links())
+		home_page = PageFactory.create_page(HomePage)
+		self.assertTrue(home_page.home_test())
 
 	def test_tryon(self):
 		webdriver = WTF_WEBDRIVER_MANAGER.new_driver()
-		signin_page = signin_flow("aaa@gmail.com", "123456", webdriver)
-		webdriver.get(self.base_url+'tryon.php?tryontype=face')
+		#signin_page = signin_flow("aaa@gmail.com", "123456", webdriver)
+		webdriver.get(self.base_url+'tryonindex.php')
 		tryon_page = PageFactory.create_page(TryOnPage)
 		self.assertTrue(tryon_page.tryon_test())
 
 	def test_shop(self):
 		webdriver = WTF_WEBDRIVER_MANAGER.new_driver()
-		signin_page = signin_flow("aaa@gmail.com", "123456", webdriver)
+		#signin_page = signin_flow("aaa@gmail.com", "123456", webdriver)
 		webdriver.get(self.base_url+'Shop.php')
 		shop_page = PageFactory.create_page(ShopPage)
 		self.assertTrue(shop_page.shop_test())
 
-	'''def test_emShare(self):
+	def test_emShare(self):
 		webdriver = WTF_WEBDRIVER_MANAGER.new_driver()
-		signin_page = signin_flow("aaa@gmail.com", "123456", webdriver)
 		webdriver.get(self.base_url+'SHARE.php')
 		emShare_page = PageFactory.create_page(EmShare)
-		self.assertTrue(emShare_page.emShare_test())'''
+		self.assertTrue(emShare_page.emShare_test())
+
+	def test_fashion(self):
+		webdriver = WTF_WEBDRIVER_MANAGER.new_driver()
+		webdriver.get(self.base_url+'Fashion%20News.php')
+		fashion_page = PageFactory.create_page(Fashion)
+		self.assertTrue(fashion_page.fashion_test())
+
+	def test_userprofile(self):
+		webdriver = WTF_WEBDRIVER_MANAGER.new_driver()
+		signin_page = signin_flow("aaa@gmail.com", "123456", webdriver)
+		webdriver.get(self.base_url+'My.php')
+		my_page = PageFactory.create_page(UserProfile)
+		self.assertTrue(my_page.userprofile_test())

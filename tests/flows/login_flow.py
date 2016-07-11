@@ -7,7 +7,7 @@ from wtframework.wtf.web.page import PageFactory
 
 def login(username, password, webdriver):
 
-    webdriver.get("http://ec2-52-9-175-55.us-west-1.compute.amazonaws.com/signin.php")
+    webdriver.get("https://qa.emfitting.com/signin.php")
     signin_page = PageFactory.create_page(SignInPage, webdriver)
     signin_page(username, password)
 

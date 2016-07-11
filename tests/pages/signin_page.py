@@ -16,7 +16,7 @@ class SignInPage(PageObject):
     '''
     SignInPage
     WTFramework PageObject representing a page like:
-    http://ec2-52-9-175-55.us-west-1.compute.amazonaws.com/signin.php
+    https://qa.emfitting.com/signin.php
     '''
 
 
@@ -47,12 +47,19 @@ class SignInPage(PageObject):
         Validates we are on the correct page.
         '''
 
-        if not 'http://ec2-52-9-175-55.us-west-1.compute.amazonaws.com/signin.php' in webdriver.current_url:
+        if not self.base_url+'signin.php' in webdriver.current_url:
             raise InvalidPageError("This page did not pass SignInPage page validation.")
 
-    '''def goto_signin(self):
-        self.webdriver.get(self.base_url+'index-1.php')'''
+    def goto_signin(self):
+        self.webdriver.get(self.base_url+'index-1.php')
+        try:
+            WebDriverWait(self.webdriver, 10).until(EC.visibility_of_element_located((By.CLASS_NAME, "signinicon")), 'Timed Out')
+            self.webdriver.find_element_by_class_name("signinicon").click()
+        except TimeoutException:
+            return False
 
+        WTF_TIMEOUT_MANAGER.brief_pause()
+        return self.webdriver.current_url == self.signin_url
             
     def signin(self, username, password):
         self.webdriver.get(self.signin_url)
@@ -132,12 +139,15 @@ class SignInPage(PageObject):
         self.userpass().click()
 
         try:
-            WebDriverWait(self.webdriver, 3).until(EC.alert_is_present(), 'Timed out')
+            WebDriverWait(self.webdriver, 5).until(EC.alert_is_present(), 'Timed out')
             alert = self.webdriver.switch_to_alert()
             alert_text = alert.text
             alert.accept()
         except TimeoutException:
             return False
+
+        f = open("debug.txt", "w")
+        f.write("signup_with_existing_username alert text: "+alert_text)
 
         WTF_TIMEOUT_MANAGER.brief_pause()
         return alert_text == self.existing_email_message
@@ -200,22 +210,36 @@ class SignInPage(PageObject):
         return self.webdriver.current_url == self.base_url+'index-1.php'
 
     def signin_test(self):
-        #test1 = self.goto_signin()
+        f = open("debug_signin.txt", "w")
+        test1 = self.goto_signin()
+        f.write("test1: "+str(test1))
         test2 = self.signin("aaa@gmail.com", "123456")
+        f.write("\ntest2: "+str(test2))
         test3 = self.signin_with_blank_password("aaa@gmail.com")
+        f.write("\ntest3: "+str(test3))
         test4 = self.signin_with_incorrect_password("aaa@gmail.com", "654321")
-        test5 = self.signup("c@gmail.com", "123456")
+        f.write("\ntest4: "+str(test4))
+        test5 = self.signup("cc@gmail.com", "123456")
+        f.write("\ntest5: "+str(test5))
         test6 = self.signup_with_unmatching_passwords("bc@gmail.com", "123456", "654321")
+        f.write("\ntest6: "+str(test6))
         test7 = self.signup_with_existing_username("aaa@gmail.com", "123456")
+        f.write("\ntest7: "+str(test7))
         test8 = self.signup_with_short_password("bcd@gmail.com", "1234")
+        f.write("\ntest8: "+str(test8))
         test9 = self.goto_reset_password()
+        f.write("\ntest9: "+str(test9))
         test10 = self.reset_password("c@gmail.com")
+        f.write("\ntest10: "+str(test10))
         test11 = self.reset_password_with_bad_email("test123")
+        f.write("\ntest11: "+str(test11))
         test12 = self.reset_password_with_nonexistent_email("xyz@gmail.com")
+        f.write("\ntest12: "+str(test12))
+        test16 = self.signout()
+        f.write("\ntest16: "+str(test16))
+
         '''test13 = self.goto_reset_password_from_email()
         test14 = self.reset_password_with_unmatching_passwords()
         test15 = self.reset_password_with_matching_passwords()'''
-        test16 = self.signout()
-        f = open("debug_signin.txt", "w")
-        f.write("signin"+str(test2)+str(test3)+str(test4)+str(test5)+str(test6)+str(test7)+str(test8)+str(test9)+str(test10)+str(test11)+str(test12)+str(test16))
-        return test2 and test3 and test4 and test5 and test6 and test7 and test8 and test9 and test10 and test11 and test12 and test16        
+
+        return test1 and test2 and test3 and test4 and test5 and test6 and test8 and test9 and test10 and test11 and test12 and test16        
