@@ -1,8 +1,0 @@
-test1: True
-test2: True
-test3: True
-test4: True
-test5: True
-test6: True
-test7: True
-test8: True
